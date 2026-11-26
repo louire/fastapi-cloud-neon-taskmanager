@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Task Manager</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 4rem auto; padding: 0 1rem; }
+    ul { list-style: none; padding: 0; }
+    li { display: flex; justify-content: space-between; padding: .5rem 0; border-bottom: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <h1>Task Manager</h1>
+
+  <form hx-post="/tasks" hx-target="#tasks" hx-swap="beforeend" hx-on::after-request="this.reset()">
+    <input name="title" placeholder="Nueva tarea" required>
+    <button>Añadir</button>
+  </form>
+
+  <ul id="tasks">
+    {% for task in tasks %}{% include "_task.html" %}{% endfor %}
+  </ul>
+</body>
+</html>
