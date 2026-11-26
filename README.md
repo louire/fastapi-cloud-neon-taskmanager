@@ -25,7 +25,12 @@ uv sync
 uv run fastapi dev
 ```
 
-Open http://localhost:8000. Without `DATABASE_URL`, the app uses a local SQLite file (`tasks.db`).
+Open http://localhost:8000. Without `DATABASE_URL`, the app shows the "database deleted" message (see below). To use a local SQLite file:
+
+```bash
+export DATABASE_URL="sqlite:///tasks.db"
+uv run fastapi dev
+```
 
 To use Neon locally:
 
@@ -51,3 +56,11 @@ The app is a single page where you can add and delete tasks. Everything runs in 
 3. Clicking ✕ makes htmx send `DELETE /tasks/{id}`. FastAPI deletes the task and returns an empty response, and htmx removes that `<li>` from the page.
 
 The server always returns HTML instead of JSON, so the browser needs no JavaScript beyond htmx itself.
+
+## When the database is gone
+
+Once I finished testing, I deleted the Neon database. Instead of crashing, the app still starts and shows this message:
+
+> This demo's database has been deleted because I finished testing it. Thanks for stopping by!
+
+This happens when `DATABASE_URL` is not set, or when it is set but the database can't be reached. Pages return a 503 with the message. htmx requests (adding or deleting a task) get an `HX-Refresh` header, so the page reloads and shows the message too.

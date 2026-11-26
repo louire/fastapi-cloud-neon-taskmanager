@@ -14,6 +14,9 @@
 <body>
   <h1>Task Manager</h1>
 
+  {% if db_gone %}
+  <p>This demo's database has been deleted because I finished testing it. Thanks for stopping by!</p>
+  {% else %}
   <form hx-post="/tasks" hx-target="#tasks" hx-swap="beforeend" hx-on::after-request="this.reset()">
     <input name="title" placeholder="Nueva tarea" required>
     <button>Añadir</button>
@@ -22,5 +25,6 @@
   <ul id="tasks">
     {% for task in tasks %}{% include "_task.html" %}{% endfor %}
   </ul>
+  {% endif %}
 </body>
 </html>
